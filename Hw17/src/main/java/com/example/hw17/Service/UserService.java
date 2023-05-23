@@ -48,6 +48,20 @@ public class UserService {
         return true;
     }
 
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public List<User> findByRole(String role) {
+        return userRepository.findByRole(role);
+    }
+
+    public List<User> findByAge(Integer age) {
+        return userRepository.findByAge(age);
+    }
 
 }

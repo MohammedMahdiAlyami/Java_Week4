@@ -58,7 +58,52 @@ public class UserController {
             return ResponseEntity.status(200).body("User deleted");
         }
         return ResponseEntity.status(400).body("User not existed");
-
     }
+
+    //------------
+
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody User user) {
+        User existingUser = userService.findByUsername(user.getUsername());
+        if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.OK).body("Login successful");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
+        }
+    }
+
+    @GetMapping("/getByEmail/{email}")
+    public ResponseEntity getUserByEmail(@PathVariable String email) {
+        User user = userService.findByEmail(email);
+        if (user != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+
+    @GetMapping("/getByRole/{role}")
+    public ResponseEntity getUsersByRole(@PathVariable String role) {
+        List<User> users = userService.findByRole(role);
+        if (!users.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(users);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Users not found with role " + role);
+        }
+    }
+
+    @GetMapping("/getByAge/{age}")
+    public ResponseEntity getUsersByAge(@PathVariable Integer age) {
+        List<User> users = userService.findByAge(age);
+        if (!users.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(users);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Users not found with age " + age + " or above");
+        }
+    }
+
+
+
 
 }
